@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paul Café · Երևան</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #F7F4EF;
+      --dark: #1C1A17;
+      --brown: #6B4F35;
+      --brown-light: #C9A97A;
+      --accent: #3D2B1F;
+      --text-muted: #8C7B6E;
+      --border: rgba(107, 79, 53, 0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Georgia', serif; background: var(--cream); color: var(--dark); display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--cream);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 1.5rem; letter-spacing: 0.12em; color: var(--accent); font-style: italic; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--dark); }
+
+    /* ── SECTIONS ── */
+    .section { display: none; animation: fadeIn 0.4s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* shared headings */
+    .section-tag {
+      font-family: sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+    .section-heading {
+      font-size: 2.5rem;
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 400;
+      margin-bottom: 3rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: calc(100vh - 153px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 50px;
+      padding-bottom: 20px;
+      background: linear-gradient(160deg, #F7F4EF 55%, #EDE0CC);
+    }
+    .hero-tag {
+      font-family: sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+    .hero p {
+      font-family: sans-serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 380px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      background: var(--accent);
+      color: var(--cream);
+      font-family: sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--brown); }
+    .hero-line {
+      width: 1px;
+      height: 80px;
+      background: var(--brown-light);
+      margin: 3rem auto 0;
+      opacity: 0.4;
+    }
+
+    /* ── MENU ── */
+    .menu-wrap { padding: 5rem 3rem; max-width: 860px; margin: 0 auto; }
+    .menu-category { margin-bottom: 3rem; }
+    .menu-category h3 {
+      font-family: sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brown);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(107,79,53,0.07);
+    }
+    .item-name { font-size: 1rem; color: var(--dark); }
+    .item-desc {
+      font-family: sans-serif;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+    .item-price {
+      font-family: sans-serif;
+      font-size: 0.88rem;
+      color: var(--brown);
+      white-space: nowrap;
+      margin-left: 1.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-wrap { padding-top: 50px; padding-bottom: 20px; max-width: 900px; margin: 0 auto; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--brown);
+      text-transform: uppercase;
+    }
+        .about-img img{
+      width: 100%;
+    }
+    .about-body p {
+      font-family: sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--text-muted);
+      margin-bottom: 1.4rem;
+    }
+    .about-stats { display: flex; gap: 2.5rem; margin-top: 2rem; }
+    .stat-num { font-size: 2rem; font-style: italic; color: var(--accent); }
+    .stat-label { font-family: sans-serif; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.05em; }
+
+    /* ── GALLERY ── */
+    .gallery-wrap { padding-top: 50px; padding-bottom: 50px; max-width: 900px; margin: 0 auto; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .gallery-item {
+      background: #D9CBBA;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--brown);
+      text-transform: uppercase;
+      overflow: hidden;
+    }
+        .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* make the 4th item span 2 columns and shorter */
+    .gallery-item:nth-child(4) { grid-column: span 2; aspect-ratio: 2/1; background: #C5B89A; }
+    .gallery-item:nth-child(5) { background: #C5B89A; }
+    .gallery-item:nth-child(6) { background: #E8DDD0; }
+    /* Replace placeholder text with real <img> once you have photos */
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── CONTACT ── */
+    .contact-wrap { padding-top: 50px; padding-bottom: 20px; max-width: 900px; margin: 0 auto; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .info-block { margin-bottom: 2rem; }
+    .info-block:last-child { 
+      margin-bottom: 0;
+    }
+    .info-label {
+      font-family: sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+    .info-value { font-size: 1rem; color: var(--dark); line-height: 1.65; }
+    .map-box {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #E5DDD3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--brown);
+      text-transform: uppercase;
+    }
+    /* To embed a real Google Map, replace .map-box with:
+       <iframe src="YOUR_EMBED_URL" width="100%" height="100%" style="border:0;" allowfullscreen></iframe> */
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      font-family: sans-serif;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── INSTAGRAM ── */
+    .insta-section { padding-top: 50px; padding-bottom: 20px; max-width: 900px; margin: 0 auto; }
+    .insta-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3.5rem 2rem;
+      border: 1px solid var(--border);
+      margin-bottom: 3rem;
+      background: rgba(201,169,122,0.07);
+    }
+    .insta-icon {
+      width: 48px; height: 48px;
+      margin-bottom: 1.2rem;
+    }
+    .insta-handle {
+      font-family: sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .insta-sub {
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+    }
+    .insta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      background: var(--accent);
+      color: var(--cream);
+      font-family: sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .insta-btn:hover { background: var(--brown); }
+    .insta-posts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+    .insta-post {
+      aspect-ratio: 1;
+      background: #D9CBBA;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .insta-post:nth-child(2) { background: #C5B09A; }
+    .insta-post:nth-child(3) { background: #E2D5C3; }
+    .insta-post:nth-child(4) { background: #CFC0AC; }
+    .insta-post:nth-child(5) { background: #D4C4B0; }
+    .insta-post:nth-child(6) { background: #BEA98E; }
+    .insta-overlay {
+      position: absolute; inset: 0;
+      background: rgba(61,43,31,0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s;
+    }
+    .insta-post:hover .insta-overlay { background: rgba(61,43,31,0.45); }
+    .insta-overlay-icon {
+      opacity: 0;
+      transition: opacity 0.25s;
+      color: var(--cream);
+      font-family: sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .insta-post:hover .insta-overlay-icon { opacity: 1; }
+    .insta-post img { width: 100%; height: 100%; object-fit: cover; }
+    .insta-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: sans-serif; font-size: 0.68rem;
+      letter-spacing: 0.08em; color: var(--brown);
+      text-transform: uppercase;
+    }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--accent);
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; position: sticky; top: 0; flex-wrap: nowrap; }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--cream);
+        border-bottom: 1px solid var(--border);
+        gap: 0;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.35s ease, opacity 0.3s ease, padding 0.3s ease;
+        z-index: 99;
+      }
+      .nav-links.open {
+        max-height: 400px;
+        opacity: 1;
+        padding: 0.5rem 0 1rem;
+      }
+      .nav-links li { width: 100%; }
+      .nav-links a {
+        display: block;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.85rem;
+        border-bottom: 1px solid rgba(107,79,53,0.07);
+      }
+      .hero { min-height: 80vh; padding: 3rem 1.5rem; }
+      .hero h1 { font-size: 3.5rem; }
+      .menu-wrap,
+      .about-wrap,
+      .gallery-wrap,
+      .contact-wrap,
+      .insta-section { padding: 3rem 1.5rem; }
+      .section-heading { font-size: 2rem; margin-bottom: 2rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-img { aspect-ratio: 16/9; }
+      .about-stats { gap: 1.5rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item:nth-child(4) { grid-column: span 2; aspect-ratio: 16/9; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .insta-posts { grid-template-columns: repeat(2, 1fr); }
+      .insta-cta { padding: 2rem 1.2rem; }
+    }
+
+    iframe{
+        width: 100%;
+        height: 330px;
+    }
+
+    @media (max-width: 475px) {
+      .hero h1 { font-size: 2.8rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item:nth-child(4) { grid-column: span 1; aspect-ratio: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="logo">Paul</div>
+  <button class="hamburger" id="hamburger" aria-label="Մենյու" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-list">
+    <li><a id="nav-home"    onclick="show('home')"    class="active">Գլխավոր</a></li>
+    <li><a id="nav-menu"    onclick="show('menu')">Մենյու</a></li>
+    <li><a id="nav-about"   onclick="show('about')">Մեր մասին</a></li>
+    <li><a id="nav-gallery" onclick="show('gallery')">Գալերեա</a></li>
+    <li><a id="nav-contact" onclick="show('contact')">Կոնտակտ</a></li>
+    <li><a id="nav-instagram" onclick="show('instagram')">Instagram</a></li>
+  </ul>
+</nav>
+
+<!-- ── HOME ── -->
+<div class="section active" id="home">
+  <div class="hero">
+    <div class="hero-tag">Երևան · Հայաստան</div>
+    <h1>Paul<br>Café</h1>
+    <p>Հանգիստ անկյուն քաղաքի սրտում, որտեղ ամեն բաժակ պատմություն ունի:</p>
+    <button class="btn" onclick="show('menu')">Տեսնել մենյուն</button>
+  </div>
+</div>
+
+<!-- ── MENU ── -->
+<div class="section" id="menu">
+  <div class="menu-wrap">
+    <div class="section-tag">Մեր ընտրությունը</div>
+    <div class="section-heading">Մենյու</div>
+
+    <div class="menu-category">
+      <h3>Ըմպելիքներ</h3>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Էսպրեսո</div>
+          <div class="item-desc">Մաքուր, կենտրոնացված, արթնացնող</div>
+        </div>
+        <div class="item-price">700 ֏</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Կապուչինո</div>
+          <div class="item-desc">Թանձր կաթ, փափուկ փրփուր</div>
+        </div>
+        <div class="item-price">900 ֏</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Ֆլեթ Ուայթ</div>
+          <div class="item-desc">Կրկնակի շոտ, մետաքսյա կաթ</div>
+        </div>
+        <div class="item-price">1 000 ֏</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Մաչա Լաթե</div>
+          <div class="item-desc">Ճապոնական կանաչ թեյ, գոլ կաթ</div>
+        </div>
+        <div class="item-price">1 200 ֏</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Սպիտակ Հոտ Չոկոլադ</div>
+          <div class="item-desc">Կաթ, բելգիական սպիտակ շոկոլադ</div>
+        </div>
+        <div class="item-price">1 100 ֏</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>Թխվածք &amp; Սնունդ</h3>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Կռուասան</div>
+          <div class="item-desc">Թարմ թխված, կարագե, շերտ-շերտ</div>
+        </div>
+        <div class="item-price">800 ֏</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Բրունի</div>
+          <div class="item-desc">Մուգ շոկոլադ, ձեթածոր հյուսվածք</div>
+        </div>
+        <div class="item-price">700 ֏</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Ավոկադո Թոսթ</div>
+          <div class="item-desc">Թարմ հաց, ավոկադո, ռեհան, ձու</div>
+        </div>
+        <div class="item-price">1 800 ֏</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="item-name">Գրանոլա</div>
+          <div class="item-desc">Թարմ մրգեր, հունական մածուն, մեղր</div>
+        </div>
+        <div class="item-price">1 500 ֏</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT ── -->
+<div class="section" id="about">
+  <div class="about-wrap">
+    <div class="section-tag">Ովքե՞ր ենք մենք</div>
+    <div class="section-heading">Մեր մասին</div>
+    <div class="about-grid">
+      <!-- Replace with <img src="your-photo.jpg" alt="Կաֆե"> -->
+      <div class="about-img">
+        <img src="img/paul-img.jpg" alt="">
+      </div>
+      <div class="about-body">
+        <p>Paul Café-ն բացվեց 2019-ին Երևանի կենտրոնում՝ մի պարզ երազանքով. ստեղծել վայր, որտեղ ժամանակն ավելի դանդաղ է ընթանում:</p>
+        <p>Մենք հավատում ենք լավ սուրճին, ազնիվ բաղադրիչներին ու ջերմ մթնոլորտին: Ամեն ըմպելիք պատրաստվում է ուշադրությամբ, ամեն հյուրի համար:</p>
+        <div class="about-stats">
+          <div>
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Տարի</div>
+          </div>
+          <div>
+            <div class="stat-num">12</div>
+            <div class="stat-label">Սուրճի տեսակ</div>
+          </div>
+          <div>
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Ջերմ պահեր</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── GALLERY ── -->
+<div class="section" id="gallery">
+  <div class="gallery-wrap">
+    <div class="section-tag">Մեր տարածքը</div>
+    <div class="section-heading">Ֆոտոգալերեա</div>
+    <div class="gallery-grid">
+      <!-- Replace the inner text with <img src="..." alt="..."> for real photos -->
+      <div class="gallery-item">
+        <img src="img/img1.jpg" alt="">
+      </div>
+      <div class="gallery-item">
+        <img src="img/img2.jpg" alt="">
+      </div>
+      <div class="gallery-item">
+        <img src="img/img3.jpg" alt="">
+      </div>
+      <div class="gallery-item">
+        <img src="img/img5.jpg" alt="">
+      </div>
+      <div class="gallery-item">
+        <img src="img/img4.jpg" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTACT ── -->
+<div class="section" id="contact">
+  <div class="contact-wrap">
+    <div class="section-tag">Կապ մեզ հետ</div>
+    <div class="section-heading">Կոնտակտ</div>
+    <div class="contact-grid">
+      <div>
+        <div class="info-block">
+          <div class="info-label">Հասցե</div>
+          <div class="info-value">Աբովյան 12, Երևան<br>0001, Հայաստան</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Աշխատանքային ժամեր</div>
+          <div class="info-value">Երկ–Ուրբ · 08:00–22:00<br>Շաբ–Կիր · 09:00–23:00</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Հեռախոս</div>
+          <div class="info-value">+374 10 12 34 56</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Էլ. փոստ</div>
+          <div class="info-value">hello@paulcafe.am</div>
+        </div>
+      </div>
+      <iframe
+  src="https://www.google.com/maps?q=PAUL+Yerevan&hl=hy&z=16&output=embed"
+  style="border:0;"
+  loading="lazy">
+</iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ── INSTAGRAM ── -->
+<div class="section" id="instagram">
+  <div class="insta-section">
+    <div class="section-tag">Մեզ հետևիր</div>
+    <div class="section-heading">Instagram</div>
+
+    <!-- CTA block -->
+    <div class="insta-cta">
+      <svg class="insta-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="40" height="40" rx="12" stroke="#6B4F35" stroke-width="2.5"/>
+        <circle cx="24" cy="24" r="9" stroke="#6B4F35" stroke-width="2.5"/>
+        <circle cx="35.5" cy="12.5" r="2" fill="#6B4F35"/>
+      </svg>
+      <div class="insta-handle">@paul_armenia</div>
+      <div class="insta-sub">Հետևիր մեր ամենօրյա պատմություններին, նոր ըմպելիքներին ու կաֆեի կյանքին:</div>
+      <a class="insta-btn" href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 48 48" fill="none">
+          <rect x="4" y="4" width="40" height="40" rx="12" stroke="#F7F4EF" stroke-width="3"/>
+          <circle cx="24" cy="24" r="9" stroke="#F7F4EF" stroke-width="3"/>
+          <circle cx="35.5" cy="12.5" r="2.5" fill="#F7F4EF"/>
+        </svg>
+        Բացել Instagram-ում
+      </a>
+    </div>
+
+    <!-- Post grid — replace placeholders with real <img> tags from instagram -->
+    <!-- Example: <img src="https://your-cdn.com/post1.jpg" alt="Paul Café"> -->
+    <div class="insta-posts">
+      <a class="insta-post" href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener">
+        <div class="insta-placeholder">
+          <img src="img/insta1.jpg" alt="">
+        </div>
+        <div class="insta-overlay"><span class="insta-overlay-icon">Տեսնել</span></div>
+      </a>
+      <a class="insta-post" href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener">
+        <div class="insta-placeholder"><img src="img/insta2.jpg" alt=""></div>
+        <div class="insta-overlay"><span class="insta-overlay-icon">Տեսնել</span></div>
+      </a>
+      <a class="insta-post" href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener">
+        <div class="insta-placeholder">Լուսանկար 3</div>
+        <div class="insta-overlay"><span class="insta-overlay-icon">Տեսնել</span></div>
+      </a>
+      <a class="insta-post" href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener">
+        <div class="insta-placeholder">Լուսանկար 4</div>
+        <div class="insta-overlay"><span class="insta-overlay-icon">Տեսնել</span></div>
+      </a>
+      <a class="insta-post" href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener">
+        <div class="insta-placeholder">Լուսանկար 5</div>
+        <div class="insta-overlay"><span class="insta-overlay-icon">Տեսնել</span></div>
+      </a>
+      <a class="insta-post" href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener">
+        <div class="insta-placeholder">Լուսանկար 6</div>
+        <div class="insta-overlay"><span class="insta-overlay-icon">Տեսնել</span></div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  © 2025 Paul Café · Երևան ·
+  <a href="https://www.instagram.com/paul_armenia/" target="_blank" rel="noopener"
+     style="color: var(--brown); text-decoration: none; letter-spacing: 0.05em;">@paul_armenia</a>
+</footer>
+
+<script>
+function initMap() {
+  const yerevan = { lat: 40.1792, lng: 44.4991 };
+
+  const map = new google.maps.Map(document.getElementById("map"), {
+    center: yerevan,
+    zoom: 14,
+    language: "hy"
+  });
+
+  new google.maps.Marker({
+    position: yerevan,
+    map: map
+  });
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&language=hy" async defer></script>
+
+<script>
+  function toggleNav() {
+    var btn = document.getElementById('hamburger');
+    var list = document.getElementById('nav-list');
+    btn.classList.toggle('open');
+    list.classList.toggle('open');
+  }
+
+  function show(id) {
+    // hide all sections
+    document.querySelectorAll('.section').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    // deactivate all nav links
+    document.querySelectorAll('.nav-links a').forEach(function(a) {
+      a.classList.remove('active');
+    });
+    // show selected section
+    document.getElementById(id).classList.add('active');
+    // activate matching nav link
+    var navEl = document.getElementById('nav-' + id);
+    if (navEl) navEl.classList.add('active');
+    // close mobile nav
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('nav-list').classList.remove('open');
+    // scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
